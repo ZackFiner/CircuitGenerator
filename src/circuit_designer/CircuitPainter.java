@@ -208,7 +208,7 @@ public class CircuitPainter {
 				}
 				else
 				{
-					System.out.println("ERROR: columns contained invalid class type");
+					System.err.println("ERROR: columns contained invalid class type");
 					break;
 				}
 				outputs.put(selected_gate.getIndex(), new Pos(x_cntr+icon_width, y_cntr+icon_height/2));
@@ -337,7 +337,7 @@ public class CircuitPainter {
 				}
 				else
 				{
-					System.out.println("ERROR: columns contained invalid class type");
+					System.err.println("ERROR: columns contained invalid class type");
 					break;
 				}
 			}
@@ -470,7 +470,7 @@ public class CircuitPainter {
 				}
 				else
 				{
-					System.out.println("ERROR: columns contained invalid class type");
+					System.err.println("ERROR: columns contained invalid class type");
 					break;
 				}
 			}
@@ -532,7 +532,7 @@ public class CircuitPainter {
 	}
 	public static void main(String[] args)
 	{
-		CompoundCircuit test = new CompoundCircuit(4);
+		CompoundCircuit test = new CompoundCircuit(2);
 		try {
 		    // retrieve image
 		    BufferedImage bi = drawCircuit(test);
