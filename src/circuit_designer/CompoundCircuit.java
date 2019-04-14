@@ -72,7 +72,12 @@ public class CompoundCircuit {
 			ArrayList<Gate> previousGates = new ArrayList<Gate>();
 			previousGates.addAll(starters);
 			int gateIndex = 0;
-			while (gateCount > 1)//we terminate once we're down to one gate
+			if (inputSize <=1)
+			{
+				System.err.println("ERROR: YOU MUST HAVE ATLEAST 2 INPUTS");
+				return null;
+			}
+			do //we terminate once we're down to one gate
 			{
 				ArrayList<Gate> c_col = new ArrayList<Gate>();
 				int neededInputs = 0;
@@ -127,13 +132,12 @@ public class CompoundCircuit {
 				lastColumn = c_col;
 				previousGates.addAll(c_col);
 				gateCount = c_col.size();//gateCount will decrease, as the number of gates in a column are limited by the number of outputs from the previous row
-			}
+			} while (gateCount > 1);
 			this.columns = columns;
 			return lastColumn.get(0);
 		}
 	}
 	public ArrayList<Gate> inputSequence;
-	public ArrayList<Gate> gateSequence;
 	public ArrayList<ArrayList<Gate>> columns;
 	public Gate output;
 	
@@ -196,7 +200,6 @@ public class CompoundCircuit {
 			}
 			else if (selected instanceof InputGate)
 			{
-				InputGate gate = (InputGate)selected;
 				System.out.println("ERROR: TRIED TO OUTPUT INPUT GATE");
 			}
 		}
@@ -207,7 +210,7 @@ public class CompoundCircuit {
 		String r = "";
 		if (g instanceof InputGate)
 		{
-			for (int i = 0; i < 1+g.getIndex()*-1; i++)
+			for (int i = 0; i < g.getIndex()*-1; i++)
 				r+="x";
 			return r;
 		}
@@ -245,7 +248,7 @@ public class CompoundCircuit {
 	}
 	public static void main(String[] args)
 	{
-		CompoundCircuit test = new CompoundCircuit(10);
+		CompoundCircuit test = new CompoundCircuit(3);
 		System.out.println(test.output.getOutput());
 		System.out.print(test.getCircuitString());
 	}
