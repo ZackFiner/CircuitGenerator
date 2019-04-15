@@ -214,6 +214,11 @@ public class CircuitPainter {
 				}
 				outputs.put(selected_gate.getIndex(), new Pos(x_cntr+icon_width, y_cntr+icon_height/2));
 				painter.drawImage(icon, x_cntr, y_cntr, icon_width, icon_height, null);
+				if (selected_gate.getOutput() && drawInputs) {
+					painter.setPaint(Color.RED);
+					painter.fillOval((int)(x_cntr+(icon_width*0.25)), (int)(y_cntr+(icon_height*0.4)), 10, 10);
+					painter.setPaint(Color.BLACK);
+				}
 				painter.drawString("y"+selected_gate.getIndex(), (int)(x_cntr+(icon_width*0.0)), (int)(y_cntr+(icon_height*0.0)));
 			}
 		}
@@ -262,12 +267,12 @@ public class CircuitPainter {
 						g1 = gate.getOp2();
 						g2 = gate.getOp1();
 					}
-					drawConnection(image, inputs.get(gate.getIndex()).get(0).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(0).x, 
 							inputs.get(gate.getIndex()).get(0).y, 
 							outputs.get(g1.getIndex()).x, 
 							outputs.get(g1.getIndex()).y, 
 							getRandomColor(), Math.abs(mixv1));
-					drawConnection(image, inputs.get(gate.getIndex()).get(1).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(1).x, 
 							inputs.get(gate.getIndex()).get(1).y, 
 							outputs.get(g2.getIndex()).x, 
 							outputs.get(g2.getIndex()).y, 
@@ -306,12 +311,12 @@ public class CircuitPainter {
 						g1 = gate.getOp2();
 						g2 = gate.getOp1();
 					}
-					drawConnection(image, inputs.get(gate.getIndex()).get(0).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(0).x, 
 							inputs.get(gate.getIndex()).get(0).y, 
 							outputs.get(g1.getIndex()).x, 
 							outputs.get(g1.getIndex()).y, 
 							getRandomColor(), Math.abs(mixv1));
-					drawConnection(image, inputs.get(gate.getIndex()).get(1).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(1).x, 
 							inputs.get(gate.getIndex()).get(1).y, 
 							outputs.get(g2.getIndex()).x, 
 							outputs.get(g2.getIndex()).y, 
@@ -330,7 +335,7 @@ public class CircuitPainter {
 						mixv = ((double)gate.getOp().getIndex()-c1.columns.get(i-1).get(0).getIndex())/(c1.columns.get(i-1).size());
 					}
 					
-					drawConnection(image, inputs.get(gate.getIndex()).get(0).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(0).x, 
 							inputs.get(gate.getIndex()).get(0).y, 
 							outputs.get(gate.getOp().getIndex()).x, 
 							outputs.get(gate.getOp().getIndex()).y, 
@@ -394,12 +399,12 @@ public class CircuitPainter {
 						g1 = gate.getOp2();
 						g2 = gate.getOp1();
 					}
-					drawConnection(image, inputs.get(gate.getIndex()).get(0).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(0).x, 
 							inputs.get(gate.getIndex()).get(0).y, 
 							outputs.get(g1.getIndex()).x, 
 							outputs.get(g1.getIndex()).y, 
 							isLive(g1.getOutput()), Math.abs(mixv1));
-					drawConnection(image, inputs.get(gate.getIndex()).get(1).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(1).x, 
 							inputs.get(gate.getIndex()).get(1).y, 
 							outputs.get(g2.getIndex()).x, 
 							outputs.get(g2.getIndex()).y, 
@@ -439,12 +444,12 @@ public class CircuitPainter {
 						g2 = gate.getOp1();
 					}
 
-					drawConnection(image, inputs.get(gate.getIndex()).get(0).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(0).x, 
 							inputs.get(gate.getIndex()).get(0).y, 
 							outputs.get(g1.getIndex()).x, 
 							outputs.get(g1.getIndex()).y, 
 							isLive(g1.getOutput()), Math.abs(mixv1));
-					drawConnection(image, inputs.get(gate.getIndex()).get(1).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(1).x, 
 							inputs.get(gate.getIndex()).get(1).y, 
 							outputs.get(g2.getIndex()).x, 
 							outputs.get(g2.getIndex()).y, 
@@ -463,7 +468,7 @@ public class CircuitPainter {
 						mixv = ((double)gate.getOp().getIndex()-c1.columns.get(i-1).get(0).getIndex())/(c1.columns.get(i-1).size());
 					}
 					
-					drawConnection(image, inputs.get(gate.getIndex()).get(0).x, 
+					drawConnection(image, painter, inputs.get(gate.getIndex()).get(0).x, 
 							inputs.get(gate.getIndex()).get(0).y, 
 							outputs.get(gate.getOp().getIndex()).x, 
 							outputs.get(gate.getOp().getIndex()).y, 
@@ -489,6 +494,7 @@ public class CircuitPainter {
 		
 		drawGates(painter, image, inputs, outputs, c1, false);
 		drawAllConnections(painter, image, inputs, outputs, c1);
+		painter.dispose();
 		return image;
 	}
 	public static BufferedImage drawLiveCircuit(CompoundCircuit c1) {
@@ -503,17 +509,17 @@ public class CircuitPainter {
 		
 		drawGates(painter, image, inputs, outputs, c1, true);
 		drawAllLiveConnections(painter, image, inputs, outputs, c1);
+		painter.dispose();
 		return image;
 	} 
-	public static void drawConnection(BufferedImage canvas, int x1, int y1, int x2, int y2, Color c, double cheatVal)
+	public static void drawConnection(BufferedImage canvas, Graphics2D painter, int x1, int y1, int x2, int y2, Color c, double cheatVal)
 	{
-		Graphics2D painter = canvas.createGraphics();
 		int midx = (int)((x2-x1)*(cheatVal*0.8+0.1))+x1;
 		painter.setPaint(c);
 		painter.drawLine(x1, y1, midx, y1);
 		painter.drawLine(midx, y1, midx, y2);
 		painter.drawLine(midx, y2, x2, y2);
-		
+		painter.setPaint(Color.BLACK);
 	}
 	public static void saveLiveCircuit(CompoundCircuit c, String filename)
 	{
