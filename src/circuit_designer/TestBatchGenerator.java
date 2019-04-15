@@ -19,13 +19,19 @@ public class TestBatchGenerator {
 		boolean gen_diagrams = args[3].equals("t");
 		ArrayList<String> trueset = new ArrayList<String>();
 		ArrayList<String> falseset = new ArrayList<String>();
+		ArrayList<String> testindex = new ArrayList<String>();
 		Random random = new Random();
 		for(int i = 0; i < num_circuits; i++)
 		{
 			CompoundCircuit tmp = new CompoundCircuit(random.nextInt(8)+2);
+			if (gen_diagrams)
+				CircuitPainter.saveCircuit(tmp, "circuits/templates/circuit"+i+".png");
 			for(int j = 0; j < num_examples; j++)
 			{
 				String tmp_output = tmp.getCircuitString();
+				if (gen_diagrams)
+					CircuitPainter.saveLiveCircuit(tmp, "circuits/test/test"+(i*num_examples + j)+".png");
+				testindex.add((i*num_examples + j)+":"+tmp_output+" "+(tmp.output.getOutput() ? "1" : "0"));
 				if (tmp.output.getOutput())
 					trueset.add(tmp_output);
 				else
@@ -42,16 +48,21 @@ public class TestBatchGenerator {
 			PrintWriter pw_true = new PrintWriter(fw_true);
 			FileWriter fw_false = new FileWriter(new File(filename+"_false.txt"));
 			PrintWriter pw_false = new PrintWriter(fw_false);
-			
+			FileWriter fw_all = new FileWriter(new File(filename+"_all.txt"));
+			PrintWriter pw_all = new PrintWriter(fw_all);
 			for (String s: trueset)
 				pw_true.println(s);
 			for (String s: falseset)
 				pw_false.println(s);
+			for (String s: testindex)
+				pw_all.println(s);
 			
 			pw_true.close();
 			pw_false.close();
+			pw_all.close();
 			fw_true.close();
 			fw_false.close();
+			fw_all.close();
 		}
 		catch (IOException e)
 		{
