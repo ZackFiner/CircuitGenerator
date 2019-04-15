@@ -26,6 +26,8 @@ public class TestBatchGenerator {
 			CompoundCircuit tmp = new CompoundCircuit(random.nextInt(8)+2);
 			if (gen_diagrams)
 				CircuitPainter.saveCircuit(tmp, "circuits/templates/circuit"+i+".png");
+				if (i==0)
+					CircuitPainter.saveCircuit(tmp, "circuits/templates/circuit"+i+".png");
 			for(int j = 0; j < num_examples; j++)
 			{
 				String tmp_output = tmp.getCircuitString();
