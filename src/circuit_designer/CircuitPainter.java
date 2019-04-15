@@ -12,10 +12,11 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import resources.ResourceLoader;
 public class CircuitPainter {
-	private static Image and_gate;
-	private static Image or_gate;
-	private static Image not_gate;
+	private static Image and_gate = ResourceLoader.loadImage("g_and.png");
+	private static Image or_gate = ResourceLoader.loadImage("g_or.png");
+	private static Image not_gate = ResourceLoader.loadImage("g_not.png");
 	static class Pos
 	{
 		public int x;
@@ -477,14 +478,6 @@ public class CircuitPainter {
 		}
 	}
 	public static BufferedImage drawCircuit(CompoundCircuit c1) {
-		try {
-			and_gate = ImageIO.read(new File("g_and.png"));
-			or_gate = ImageIO.read(new File("g_or.png"));
-			not_gate = ImageIO.read(new File("g_not.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
 		BufferedImage image = new BufferedImage(1024,1024,BufferedImage.TYPE_INT_RGB);
 		Graphics2D painter = image.createGraphics();
 		painter.setPaint(Color.WHITE);
@@ -499,14 +492,6 @@ public class CircuitPainter {
 		return image;
 	}
 	public static BufferedImage drawLiveCircuit(CompoundCircuit c1) {
-		try {
-			and_gate = ImageIO.read(new File("g_and.png"));
-			or_gate = ImageIO.read(new File("g_or.png"));
-			not_gate = ImageIO.read(new File("g_not.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
 		BufferedImage image = new BufferedImage(1024,1024,BufferedImage.TYPE_INT_RGB);
 		Graphics2D painter = image.createGraphics();
 		painter.setPaint(Color.WHITE);
@@ -556,18 +541,6 @@ public class CircuitPainter {
 		catch (IOException e)
 		{
 			System.err.println(e.getMessage());
-		}
-	}
-	public static void main(String[] args)
-	{
-		CompoundCircuit test = new CompoundCircuit(2);
-		try {
-		    // retrieve image
-		    BufferedImage bi = drawCircuit(test);
-		    File outputfile = new File("saved.png");
-		    ImageIO.write(bi, "png", outputfile);
-		} catch (IOException e) {
-		    
 		}
 	}
 }
