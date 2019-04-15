@@ -536,6 +536,7 @@ public class CircuitPainter {
 		{
 			BufferedImage bi = drawLiveCircuit(c);
 			File outputfile = new File(filename);
+			outputfile.getParentFile().mkdirs();
 			ImageIO.write(bi, "png", outputfile);
 		}
 		catch (IOException e)
@@ -549,6 +550,7 @@ public class CircuitPainter {
 		{
 			BufferedImage bi = drawCircuit(c);
 			File outputfile = new File(filename);
+			outputfile.getParentFile().mkdirs();
 			ImageIO.write(bi, "png", outputfile);
 		}
 		catch (IOException e)
