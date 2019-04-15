@@ -530,6 +530,32 @@ public class CircuitPainter {
 		painter.drawLine(midx, y2, x2, y2);
 		
 	}
+	public static void saveLiveCircuit(CompoundCircuit c, String filename)
+	{
+		try
+		{
+			BufferedImage bi = drawLiveCircuit(c);
+			File outputfile = new File(filename);
+			ImageIO.write(bi, "png", outputfile);
+		}
+		catch (IOException e)
+		{
+			System.err.println(e.getMessage());
+		}
+	}
+	public static void saveCircuit(CompoundCircuit c, String filename)
+	{
+		try
+		{
+			BufferedImage bi = drawCircuit(c);
+			File outputfile = new File(filename);
+			ImageIO.write(bi, "png", outputfile);
+		}
+		catch (IOException e)
+		{
+			System.err.println(e.getMessage());
+		}
+	}
 	public static void main(String[] args)
 	{
 		CompoundCircuit test = new CompoundCircuit(2);
