@@ -158,6 +158,26 @@ public class CompoundCircuit {
 	{
 		//TODO: implement a constructor which can build a circuit from a circuit string
 	}
+	public void setInputs(ArrayList<Boolean> newInputs)
+	{
+		if (newInputs.size() != inputSequence.size())
+				return;
+		for (int i =0; i < inputSequence.size(); i++)
+		{
+			InputGate g = (InputGate)inputSequence.get(i);
+			g.setValue(newInputs.get(i));
+		}
+	}
+	public void setInputs(Boolean[] newInputs)
+	{
+		if (newInputs.length != inputSequence.size())
+				return;
+		for (int i =0; i < inputSequence.size(); i++)
+		{
+			InputGate g = (InputGate)inputSequence.get(i);
+			g.setValue(newInputs[i]);
+		}
+	}
 	public String getCircuitString()
 	{
 		String r = "";
@@ -200,7 +220,7 @@ public class CompoundCircuit {
 			}
 			else if (selected instanceof InputGate)
 			{
-				System.out.println("ERROR: TRIED TO OUTPUT INPUT GATE");
+				System.err.println("ERROR: TRIED TO OUTPUT INPUT GATE");
 			}
 		}
 		return r;
@@ -245,11 +265,5 @@ public class CompoundCircuit {
 			InputGate g_0 = (InputGate)g;
 			System.out.println(g_0.getIndex()+": STATIC GATE ");
 		}
-	}
-	public static void main(String[] args)
-	{
-		CompoundCircuit test = new CompoundCircuit(3);
-		System.out.println(test.output.getOutput());
-		System.out.print(test.getCircuitString());
 	}
 }
